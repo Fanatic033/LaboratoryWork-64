@@ -1,3 +1,5 @@
+import {NavLink} from "react-router-dom";
+
 const Header = () => {
     return (
         <header>
@@ -12,7 +14,7 @@ const Header = () => {
                         <h3 className='text-white'>My Blog</h3>
                         <ul className="navbar-nav gap-3">
                             <li className="nav-item">
-                                <a className="nav-link text-white" aria-current="page" href="#">Home</a>
+                                <NavLink className="nav-link text-white" aria-current="page" to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link text-white" href="#">Add</a>
@@ -21,7 +23,7 @@ const Header = () => {
                                 <a className="nav-link text-white" href="#">About</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" href="#">Contacts</a>
+                                <NavLink className="nav-link text-white" to="/Contacts">Contacts</NavLink>
                             </li>
                         </ul>
                     </div>
