@@ -6,13 +6,15 @@ import HomePage from "./Containers/HomePage/HomePage.tsx";
 import AboutPage from "./Containers/AboutPage/AboutPage.tsx";
 import MutatePage from "./Containers/MutatePage/MutatePage.tsx";
 import {useCallback, useEffect, useState} from "react";
-import {Posts, PostsList} from "./types.ts";
+import { Posts, PostsList} from "./types.ts";
 import AxiosApi from "./AxiosApi.tsx";
 import PostInfoPage from './Containers/PostInfoPage/PostInfoPage.tsx';
+import Spinner from "./Components/Spinner/Spinner.tsx";
 
 
 const App = () => {
     const [posts, setPosts] = useState<Posts[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const handlePost = (newPost: Posts) => {
         setPosts([...posts, newPost]);
@@ -30,6 +32,8 @@ const App = () => {
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setLoading(false)
         }
     }, [])
 
@@ -39,6 +43,12 @@ const App = () => {
 
     const getPostById = (id: string): Posts | undefined => {
         return posts.find(post => post.id === id);
+    }
+
+    if (loading) {
+        return (<div className="d-flex justify-content-center align-items-center" style={{height: '310px'}}>
+            <Spinner/>
+        </div>)
     }
     return (
         <>
