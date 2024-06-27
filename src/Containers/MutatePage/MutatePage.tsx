@@ -1,30 +1,51 @@
-import React, {ChangeEvent, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { ChangeEvent, useCallback, useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import AxiosApi from "../../AxiosApi.tsx";
-import {Posts} from "../../types.ts";
+import { Posts, PostsMutation } from "../../types.ts";
 import Spinner from "../../Components/Spinner/Spinner.tsx";
 
 interface Props {
     onAddPost: (newPost: Posts) => void;
 }
 
-const AddPostPage: React.FC<Props> = ({onAddPost}) => {
-    const [form, setForm] = useState<Posts>({
+const MutatePage: React.FC<Props> = ({ onAddPost }) => {
+    const [form, setForm] = useState<PostsMutation>({
+        id: '1',
         title: '',
         description: '',
         date: new Date().toLocaleString()
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const onFieldChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setForm((prev) => ({
             ...prev,
             [name]: value
         }));
     };
+
+    const fetchOnePost = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            const response = await AxiosApi.get<Posts>(`/posts/${id}.json`);
+            if (response.data) {
+                setForm(response.data);
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (id) {
+          void fetchOnePost();
+        }
+    }, [fetchOnePost, id]);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,7 +55,7 @@ const AddPostPage: React.FC<Props> = ({onAddPost}) => {
             onAddPost(form);
             navigate('/');
         } catch (error) {
-            console.log(error);
+            console.error( error);
         } finally {
             setIsLoading(false);
         }
@@ -43,12 +64,12 @@ const AddPostPage: React.FC<Props> = ({onAddPost}) => {
     return (
         <div className='container'>
             {isLoading ? (
-                <div className="d-flex justify-content-center align-items-center" style={{height: '310px'}}>
-                    <Spinner/>
+                <div className="d-flex justify-content-center align-items-center" style={{ height: '310px' }}>
+                    <Spinner />
                 </div>
             ) : (
                 <form onSubmit={onSubmit}>
-                    <h2 className='text-center mt-5'>Add New Post</h2>
+                    <h2 className='text-center mt-5'>{id ? 'Edit Post' : 'Add new post'}</h2>
                     <div className='input-group'>
                         <input
                             type='text'
@@ -73,4 +94,4 @@ const AddPostPage: React.FC<Props> = ({onAddPost}) => {
     );
 };
 
-export default AddPostPage;
+export default MutatePage;
