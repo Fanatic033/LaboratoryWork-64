@@ -12,6 +12,7 @@ const AddPostPage: React.FC<Props> = ({onAddPost}) => {
     const [form, setForm] = useState<Posts>({
         title: '',
         description: '',
+        date: new Date().toLocaleString()
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
