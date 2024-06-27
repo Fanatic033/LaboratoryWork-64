@@ -14,16 +14,16 @@ const Header = () => {
                         <h3 className='text-white'>My Blog</h3>
                         <ul className="navbar-nav gap-3">
                             <li className="nav-item">
-                                <NavLink className="nav-link text-white" aria-current="page" to="/">Home</NavLink>
+                                <NavLink className="nav-link text-white" to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" href="#">Add</a>
+                                <NavLink className="nav-link text-white" to="/new-post">Add</NavLink>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" href="#">About</a>
+                                <NavLink className="nav-link text-white" to="/about">About</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link text-white" to="/Contacts">Contacts</NavLink>
+                                <NavLink className="nav-link text-white" to="/contacts">Contacts</NavLink>
                             </li>
                         </ul>
                     </div>
