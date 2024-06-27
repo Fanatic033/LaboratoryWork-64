@@ -14,7 +14,7 @@ const HomePage: React.FC<Props> = ({posts}) => {
                 <h1 className={'text-center mt-5'}>НЕТ ПОСТОВ</h1>
             ) : (
                 posts.map((post) => (
-                    <PostItem key={post.date} post={post}/>
+                    <PostItem key={post.id} post={post}/>
                 )))}
         </div>
     );

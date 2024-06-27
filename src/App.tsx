@@ -17,8 +17,7 @@ const App = () => {
     const handlePost = (newPost: Posts) => {
         setPosts([...posts, newPost]);
     }
-
-    const getAxiosPost = useCallback(async ( ) =>{
+    const getAxiosPost = useCallback(async () => {
         try {
             const response = await AxiosApi.get<PostsList | null>('/posts.json')
             const data = response.data
@@ -32,7 +31,7 @@ const App = () => {
         } catch (err) {
             console.log(err);
         }
-    },[])
+    }, [])
 
     useEffect(() => {
         void getAxiosPost()
@@ -48,9 +47,11 @@ const App = () => {
                 <Route path="/" element={<HomePage posts={posts}/>}/>
                 <Route path="/contacts" element={<ContactsPage/>}/>
                 <Route path="/about" element={<AboutPage/>}/>
-                <Route path="/new-post" element={<MutatePage onAddPost={handlePost}/>}/>
-                <Route path="/posts/:id/edit" element={<MutatePage onAddPost={handlePost}/>}/>
-                <Route path={'/posts/:id'} element={<PostInfoPage getPostById={getPostById}/>}/>
+                <Route path="/new-post" element={<MutatePage onAddPost={handlePost} getUpdatedPosts={getAxiosPost}/>}/>
+                <Route path="/posts/:id/edit"
+                       element={<MutatePage onAddPost={handlePost} getUpdatedPosts={getAxiosPost}/>}/>
+                <Route path={'/posts/:id'}
+                       element={<PostInfoPage getPostById={getPostById} getUpdatedPosts={getAxiosPost}/>}/>
                 <Route path="*" element={<h1 className='text-center mt-5'>Not Found Page</h1>}/>
             </Routes>
         </>
